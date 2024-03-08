@@ -1,9 +1,6 @@
 export class Theme {
   constructor(def){
-    this.default = def //applies to all elements
-    this.button = null; 
-    this.link = null;
-    this.div = null;
+
   }
 }
 class ElementTheme {

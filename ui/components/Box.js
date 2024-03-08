@@ -8,12 +8,15 @@ export default class Box extends UI {
   center(){
     this.html.style.alignItems = 'center';
     this.html.style.justifyContent = 'center';
+    return this;
   }
   centerVertically(){
     this.html.style.alignItems = 'center';
+    return this;
   }
   centerHorizontally(){
     this.html.style.justifyContent = 'center';
+    return this;
   }
   
 }

@@ -2,52 +2,59 @@ import UI from '../Ui.js';
 import Box from './Box.js';
 
 //accordian label
-export class AccordianLabel extends Box {
-  constructor(text){
+export class AccordianLabel extends UI {
+  constructor(text) {
     super();
-    this.html.textContent = text;
-    this.html.classList.add('uijs-accordian-label');
+    this.setText(text);
+    this.addClass('zephyr-ui-accordian-label');
   }
 }
 
 //accordian content
-export class AccordianContent extends Box {
-  constructor(text){
+export class AccordianContent extends UI {
+  constructor(text) {
     super();
-    this.html.textContent = text;
-    this.html.classList.add('uijs-accordian-content');
-    this.setStyle('max-height', 'max(90vh, 500px)');
-    this.setStyle('overflow', 'auto');
+    this.setTheme('');
+    this.setText(text);
+    this.addClass('zephyr-ui-accordian-content');
+    this.setStyle('border', 'none');
+    this.setStyle('max-height', '50vh');
+    this.setStyle('height', '100%');
+    this.setStyle('overflow-y', 'auto');
     this.isHidden = true;
   }
-  minimize(){
-    this.html.style.height = '0';
-    this.html.style.paddingTop = '0';
-    this.html.style.paddingBottom = '0';
-    this.html.style.borderTopWidth = '0';
-    this.html.style.borderBottomWidth = '0';
+  minimize() {
+    this.setStyle({
+      height: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      borderTopWidth: 0,
+      borderBottomWidth: 0
+    });
     return this;
   }
-  expand(height, style){
-    this.html.style.height = height+'px';
-    this.html.style.paddingTop = style.paddingTop;
-    this.html.style.paddingBottom = style.paddingBottom;
-    this.html.style.borderBottomWidth = style.borderRightWidth;
+  expand(height, style) {
+    this.setStyle({
+      height: height+'px',
+      paddingTop: style.paddingTop,
+      paddingBottom: style.paddingBottom,
+      borderBottomWidth: style.borderRightWidth,
+    });
     return this;
   }
 }
 
 //accordian
 export class Accordian extends UI {
-  constructor(){
+  constructor() {
     super();
     this.labels = [];
     this.contents = [];
     this.openLimit = null;
     this.currentLimit = this.openLimit;
   }
-  addContent(label, content, index=null){
-    if(index != null){
+  addContent(label, content, index = null) {
+    if (index != null) {
       this.html.insertBefore(content.html, this.labels[index].html);
       this.html.insertBefore(label.html, content.html);
       this.labels.splice(index, 0, label);
@@ -60,24 +67,24 @@ export class Accordian extends UI {
     }
 
     const labelClick = () => {
-      const height = content.html.offsetHeight;
+      const height = content.html.scrollHeight;
       const style = getComputedStyle(content.html);
-
+      
       label.html.addEventListener('click', e => {
-        if(this.openLimit != null && content.isHidden){
-          if(this.currentLimit == 0){
-            for(const c of this.contents){
+        if (this.openLimit != null && content.isHidden) {
+          if (this.currentLimit == 0) {
+            for (const c of this.contents) {
               c.isHidden = true;
               c.minimize();
             }
-            this.currentLimit = this.openLimit-1;
+            this.currentLimit = this.openLimit - 1;
             content.expand(height, style);
             content.isHidden = false;
             return;
           }
           this.currentLimit--;
         }
-        if(content.isHidden)
+        if (content.isHidden)
           content.expand(height, style);
         else
           content.minimize();
@@ -88,14 +95,14 @@ export class Accordian extends UI {
     requestAnimationFrame(labelClick);
     return this;
   }
-  removeContent(index){
+  removeContent(index) {
     this.contents[index].html.remove();
     this.labels[index].html.remove();
     this.contents.splice(index, 1);
     this.labels.splice(index, 1);
     return this;
   }
-  setLimit(num){
+  setLimit(num) {
     this.openLimit = num;
     this.currentLimit = num;
     return this;

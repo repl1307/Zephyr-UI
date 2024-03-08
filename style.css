@@ -1,47 +1,70 @@
 html {
   height: 100%;
   width: 100%;
+  background-color: #2b3d50;
 }
 
 body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+}
+
+h1, p, h2{
   margin: 0;
   padding: 0;
 }
 
-h1, p, h2 {
-  margin: 0;
-  padding: 0;
-}
-
-.uijs-theme-default {
+.zephyr-ui {
   border: 1px solid;
   background-color: #515e63;
   color: white;
-  border-radius: 5px;
   padding: 5px;
   font-family: Roboto, sans-serif;
   transition: outline 0.25s;
 }
 
-.uijs-theme-default select {
+.zephyr-ui::-webkit-scrollbar,
+.zephyr-ui-accordian-content::-webkit-scrollbar {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+.zephyr-ui::-webkit-scrollbar-thumb,
+.zephyr-ui-accordian-content::-webkit-scrollbar-thumb {
+  background-color: #515e63;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 2px inset #404a4f;
+}
+.zephyr-ui::-webkit-scrollbar-track,
+.zephyr-ui-accordian-content::-webkit-scrollbar-track {
+  background: #404a4f;
+  opacity: 0.1;
+}
+
+.zephyr-ui::-webkit-scrollbar-corner,
+.zephyr-ui-accordian-content::-webkit-scrollbar-corner {
+  background: #404a4f;
+}
+
+select.zephyr-ui {
   padding: 10px;
   font-size: min(1rem, 5vmin);
   color: white;
   appearance: none;
 }
-.uijs-theme-default select * {
+select.zephyr-ui * {
   border-radius: 10px;
 }
 
-.uijs-theme-default:focus {
+.zephyr-ui:focus {
   outline: 2px solid #3dcfd1;
 }
-.uijs-theme-default-div {
+
+div.zephyr-ui {
   background-color: #384347;
   transition: all 0.25s;
-}
-.uijs-theme-default-div > * {
-  margin: 5px;
+  border-radius: 5px;
 }
 
 .uijs-theme-default-toast {
@@ -56,28 +79,30 @@ h1, p, h2 {
   right: 0;
 }
 
-.uijs-theme-default-button {
+button.zephyr-ui {
   border: 2px solid;
-  font-size: min(1.25rem, 5vmin);
+  font-size: 1.25em;
   transition: all 0.25s;
   position: relative;
   overflow: hidden;
+  border-radius: 5px;
 }
-.uijs-theme-default-button:hover {
+
+button.zephyr-ui:hover {
   box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.5);
 }
-.uijs-theme-default-button:active {
+button.zephyr-ui:active {
   transform: scale(0.9);
 }
 
-.uijs-accordian-label {
+.zephyr-ui-accordian-label {
   display: block;
   background-color: #334248;
   margin: 0;
   user-select: none;
 }
 
-.uijs-accordian-content {
+.zephyr-ui-accordian-content {
   background-color: #53636a;
   border-radius: 0;
   margin: 0 5px;
@@ -86,4 +111,5 @@ h1, p, h2 {
   overflow: hidden;
   transition: height 0.75s;
   box-sizing: border-box;
+  scrollbar-gutter: stable;
 }

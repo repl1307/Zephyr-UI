@@ -1,98 +1,82 @@
-import { Themes } from './utilities/theme.js';
+//ui
 export default class UI {
   static elements = [];
+  static intersectionObserver = null;
+  static mutationObserver = null;
   static parser = new DOMParser();
-  static parse(htmlString){
+  static parse(htmlString) {
     return UI.parser.parseFromString(htmlString, 'text/html').body;
   }
-  static createElement(tag, textContent='', classes=[]){
+  static createElement(tag, textContent = '') {
     const element = document.createElement(tag);
-    element.textContent = textContent;
-    for(const className of classes)
-      element.classList.add(className);
+    element.innerHTML = textContent;
     return element;
   }
-  constructor(html=null) {
+  constructor(html = null) {
     this.html = html ?? document.createElement('div');
     this.children = [];
-    this.setTheme(Themes.default);
+    this.setTheme('zephyr-ui');
     UI.elements.push(this);
+    if(!UI.intersectionObserver){
+      UI.intersectionObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting)
+            entry.target.style.visibility = 'visible';
+        });
+      });
+      UI.mutationObserver = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+          mutation.addedNodes.forEach(node => {
+            if(node.nodeType === 1)
+              UI.intersectionObserver.observe(node);
+            });
+        });
+      });
+      UI.intersectionObserver.observe(document.body);
+      UI.mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
     return this;
   }
   //set theme (see theme.js)
-  setTheme(theme){
+  setTheme(theme='') {
     this.html.style = '';
-    const nodeName = this.html.nodeName.toLowerCase();
-    let themeKey;
-
-    switch(nodeName){
-      case 'button':
-        themeKey = 'button';
-        break;
-      case 'div':
-        themeKey = 'div';
-        break;
-      default:
-        themeKey = 'default';
-        break;
-    }
-    //get uppercase indexes in string
-    const getUpperCaseIndexes = str => {
-      const indexes = [];
-      for(const char of str){
-        if(char != char.toLowerCase())
-          indexes.push(str.indexOf(char));
-      }
-      return indexes;
-    };
-
-    //converts camelCase to kebab-case
-    const convertToCssProperty = str => {
-      let propertyName = str;
-      if(propertyName.toLowerCase() != propertyName){
-        const indexes = getUpperCaseIndexes(propertyName);
-        for(const index of indexes){
-          propertyName = propertyName.slice(0, index)+'-'+propertyName[index].toLowerCase() + propertyName.slice(index + 1);
-        }
-      }
-      return propertyName;
-    };
-
-    //apply default theme
-    for(const c of theme.default.classes){
-      this.html.classList.add(c);
-    }
-    for(const [key, val] of Object.entries(theme.default.style)){
-      const cssProperty = convertToCssProperty(key);
-      this.html.style[cssProperty] = val;
-    }
-    
-    //apply element's respective theme
-    for(const c of theme[themeKey].classes){
-      this.html.classList.add(c);
-    }
-
-    for(const [key, val] of Object.entries(theme[themeKey].style)){
-      const cssProperty = convertToCssProperty(key);
-      this.html.style[cssProperty] = val;
-    }
+    this.html.classList = '';
+    if(theme != '')
+      this.addClass(theme);
     return this;
   }
 
   //append child to ui element
-  appendChild(uiElement){
-    if(uiElement instanceof HTMLElement){
-      this.html.appendChild(uiElement);
+  appendChild(uiElement) {
+    if (uiElement instanceof HTMLElement) {
+      const ui = new UI(uiElement);
+      ui.setTheme('');
+      this.html.appendChild(ui.html);
+      this.children.push(ui);
       return this;
     }
     this.children.push(uiElement);
     this.html.appendChild(uiElement.html);
     return this;
   }
-  
+  //insert child before another child
+  insertBefore(uiElement, beforeChild) {
+    const before = beforeChild instanceof HTMLElement ?
+      beforeChild : beforeChild.html;
+    const newElem = uiElement instanceof HTMLElement ?
+      uiElement : uiElement.html;
+    this.html.insertBefore(newElem, before);
+    if (!(uiElement instanceof HTMLElement)) {
+      this.children.push(uiElement);
+    }
+    return this;
+  }
   //child is the actual ui element or index of the child
-  removeChild(child){
-    if(typeof child == 'number')
+  removeChild(child) {
+    if (typeof child == 'number')
       child = this.children[child];
 
     this.children.splice(this.indexOf(child), 1);
@@ -101,39 +85,39 @@ export default class UI {
   }
 
   //set text content of ui element
-  setText(text){
+  setText(text) {
     this.html.textContent = text;
     return this;
   }
   //add to text content of ui element
-  addText(text){
+  addText(text) {
     this.html.textContent += text;
     return this;
   }
   //set inner html of ui element
-  setInnerHtml(html){
+  setInnerHtml(html) {
     const doc = UI.parser.parseFromString(html, 'text/html');
-    for(const child of this.html.children){
+    for (const child of this.html.children) {
       child.remove();
     }
     this.appendChild(doc.body);
     return this;
   }
   //add to inner html of ui element
-  addInnerHtml(html){
+  addInnerHtml(html) {
     const doc = UI.parser.parseFromString(html, 'text/html');
     this.appendChild(doc.body);
     return this;
   }
   //set css property of ui element
-  setStyle(...args){
-    if(args.length == 2){
+  setStyle(...args) {
+    if (args.length == 2) {
       const property = args[0];
       const value = args[1];
       this.html.style[property] = value;
     }
     else {
-      for(const [property, value] of Object.entries(args[0])){
+      for (const [property, value] of Object.entries(args[0])) {
         this.html.style[property] = value;
       }
     }
@@ -141,41 +125,58 @@ export default class UI {
   }
 
   //set html attribute of ui element
-  setAttribute(attribute, value){
+  setAttribute(attribute, value) {
     this.html[attribute] = value;
     return this;
   }
 
+  //get html attribute of ui element
+  getAttribute(attribute) {
+    return this.html[attribute];
+  }
+
   //modify children
-  modifyChildren(callback = child => { console.log(child); }){
-    for(const child of this.children){
+  modifyChildren(callback = child => { console.log(child); }) {
+    for (const child of this.children) {
       callback(child);
     }
     return this;
   }
 
   //add event listener
-  addEventListener(event, callback){
+  addEventListener(event, callback) {
     this.html.addEventListener(event, callback);
     return this;
   }
 
   //add class
-  addClass(...args){
-    for(const c of args)
+  addClass(...args) {
+    for (const c of args)
       this.html.classList.add(c);
     return this;
   }
   //remove class
-  removeClass(...args){
-    for(const c of args)
+  removeClass(...args) {
+    for (const c of args)
       this.html.classList.remove(c);
     return this;
   }
   //toggle class(es)
-  toggleClass(...args){
-    for(const c of args)
+  toggleClass(...args) {
+    for (const c of args)
       this.html.classList.toggle(c);
+    return this;
+  }
+
+  //remove element
+  remove() {
+    this.html.remove();
+    for (const child of this.children) {
+      if (child.html)
+        child.html.remove();
+      else
+        child.remove();
+    }
     return this;
   }
 }
