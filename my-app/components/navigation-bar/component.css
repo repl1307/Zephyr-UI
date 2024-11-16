@@ -1,0 +1,112 @@
+@font-face {
+    font-family: 'Playwrite US Modern';
+    src: url('../../assets/fonts/PlaywriteUSModern.ttf') format('truetype');
+}
+
+.navigation-bar {
+    width: 100vw;
+    background: rgb(35, 35, 35);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+@media screen and (max-width: 600px) {
+    .tab-container {
+        flex-direction: column;
+    }
+    .navigation-bar {
+        flex-direction: column;
+    }
+}
+
+.navigation-bar > h1 {
+    margin: 0;
+    padding: 0.5rem;
+    font-family: 'Playwrite US Modern';
+    font-weight: 400;
+}
+
+.tab-container {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.tab {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-family: system-ui;
+    padding: 0.5rem;
+    transition: all 0.25s;
+}
+
+.tab:hover {
+    background: rgb(25, 25, 25);
+}
+.tab::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    height: 0;
+    width: 100%;
+    background: rgb(123, 123, 123);
+    transition: all 0s;
+}
+.tab:hover::after {
+    height: 5px;
+    transition: all .5s;
+}
+
+.tab:hover .dropdown-container {
+    display: flex;
+}
+
+.dropdown-container {
+    box-sizing: border-box;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    flex-direction: column;
+    display: none;
+    padding: 5px;
+    background: none;
+    min-width: 100%;
+    z-index: 5;
+}
+
+.dropdown {
+    box-sizing: border-box;
+    display: flex;
+    background:  rgb(35, 35, 35);
+    border-radius: 0.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    flex-direction: column;
+    min-width: 100%;
+    width: max-content;
+}
+
+.dropdown > *:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown > * {
+    padding: 0.5rem;
+    font-size: 1rem;
+    text-align: left;
+}
+.dropdown > *:hover {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.dropdown > :first-child {
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+}
+
+.dropdown > :last-child {
+    border-bottom-right-radius: inherit;
+    border-bottom-left-radius: inherit;
+}

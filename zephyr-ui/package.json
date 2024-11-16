@@ -1,0 +1,21 @@
+{
+  "name": "zephyr-ui",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./utilities": "./src/utilities/index.js"
+  },
+  "files": [
+    "./lib",
+    "./src",
+    "./README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
