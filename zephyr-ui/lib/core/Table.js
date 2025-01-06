@@ -1,4 +1,4 @@
-import UI from '../UI.js';
+import UI from '../UI';
 
 //table
 export class Table extends UI {

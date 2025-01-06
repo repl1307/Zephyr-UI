@@ -1,4 +1,4 @@
-import UI from "../UI.js";
+import UI from "../UI";
 
 export default class Root extends UI {
     constructor(){

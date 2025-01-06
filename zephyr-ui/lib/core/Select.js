@@ -1,4 +1,4 @@
-import UI from '../UI.js';
+import UI from '../UI';
 
 export default class Select extends UI {
   constructor(placeholder, options){

@@ -3,6 +3,7 @@ html {
     height: 100%;
     overflow: hidden;
 }
+
 body {
     display: flex;
     flex-direction: column;
@@ -25,7 +26,7 @@ body {
 }
 
 .page-content::-webkit-scrollbar {
-    width: 0.75rem;
+    width: 0.5rem;
 }
 .page-content::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.5);
@@ -33,7 +34,7 @@ body {
 .page-content::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.15);
     border-top-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
 }
 
 .page-content > * {
@@ -52,6 +53,7 @@ body {
     width: max(15rem, 50vmin);
     max-width: 100vw;
     aspect-ratio: 1 / 1;
+    overflow: hidden;
 }
 .counter > * {
     padding: 0;
