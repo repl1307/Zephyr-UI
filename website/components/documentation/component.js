@@ -1,5 +1,7 @@
-import { UI, Box, Link } from '@repl1307/zephyr-ui';
-import markdownit from 'markdown-it'
+import { UI, Box } from '@repl1307/zephyr-ui';
+import { Router } from '@repl1307/zephyr-ui/utilities';
+import markdownit from 'markdown-it';
+import markdownItAnchor  from 'markdown-it-anchor';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import './component.css';
@@ -18,7 +20,10 @@ export default class Documentation extends Box {
     constructor(filePath){
         super();
         this.container = new Box().addClass('documentation-container');
+        this.cover = new Box().addClass('cover');
+
         this.container.append(this);
+        this.append(this.cover);
         this.addClass('documentation');
         this.generateDocs(filePath);
     }
@@ -26,6 +31,7 @@ export default class Documentation extends Box {
     async generateDocs(filePath){
         const elems = await Documentation.parseMDFile(filePath);
         elems.forEach(elem => this.append(elem));
+        this.cover.addClass('slide-out');
     }
 }
 
@@ -42,24 +48,30 @@ async function MarkdownToZephyr(text){
             }
             return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
         }
-    })
+    }).use(markdownItAnchor);
     const htmlString = md.render(text);
     const body = UI.parse(htmlString);
 
     /** @param {HTMLElement} html */
     const convertToZephyr = (html) => {
-        const shouldParse = JSON.parse(html.getAttribute('data-zephyr-parse'));
-        const isBody = html.tagName === 'BODY';
+        const shouldParse = !JSON.parse(html.getAttribute('data-zephyr-parse'));
+        const isBody = html.tagName == 'BODY';
         const tagName = isBody? 'div' : html.tagName.toLowerCase();
+        let elem = new UI(tagName);
+        for(const attribute of html.attributes){
+            elem.setAttribute(attribute.name, attribute.value)
+        }
+
+        // if(tagName == 'a'){
+        //     Router.handleAnchor(elem);
+        // }
 
         if(!shouldParse){
-            const elem = new UI(tagName);
-            elem.setInnerHtml(html.innerHTML)
+            elem.setInnerHtml(html.innerHTML);
             return elem;
         }
 
-        const elem = new UI(tagName);
-
+        // loop through child nodes, if text node append as span, otherwise append node as element
         for (const child of html.childNodes) {
             if (child.nodeType === Node.TEXT_NODE) {
                 const span = new UI('span').setText(child.textContent);
@@ -70,6 +82,7 @@ async function MarkdownToZephyr(text){
             }
         }
 
+        // if no children, just set text content
         if(html.children.length == 0){
             elem.setText(html.textContent);
         }

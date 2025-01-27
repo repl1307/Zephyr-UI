@@ -46,7 +46,7 @@ const fruits = new FruitsList(["Apple", "Banana", "Cherry"]);
 ```
 **Output**
 <div data-zephyr-parse=false>
-<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="mybaVGN" data-pen-title="Vanilla JS Fruits List" data-user="Zacharia-Haggy" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+<p class="codepen" data-height="300" data-default-tab="js,result" data-slug-hash="mybaVGN" data-pen-title="Vanilla JS Fruits List" data-user="Zacharia-Haggy" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
   <span>See the Pen <a href="https://codepen.io/Zacharia-Haggy/pen/mybaVGN">
   Vanilla JS Fruits List</a> by Zacharia Haggy (<a href="https://codepen.io/Zacharia-Haggy">@Zacharia-Haggy</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
@@ -60,37 +60,43 @@ const fruits = new FruitsList(["Apple", "Banana", "Cherry"]);
 **React:**
 ```jsx
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 
 const FruitsList = ({ initialFruitNames }) => {
   const [fruits, setFruits] = useState(initialFruitNames);
 
   // Function to add a new fruit
-  const addFruit = (newFruit) => {
-    setFruits([...fruits, newFruit]);
+  const addRandomFruit = () => {
+    const randomFruits = ["Watermelon", "Orange", "Strawberry", "Apple", "Cherry", "Mango", "Grape"];
+    const index = Math.floor(Math.random() * randomFruits.length);
+    setFruits([...fruits, randomFruits[index]]);
   };
 
   return (
     <div>
+      <button onClick={addRandomFruit}>Add Random Fruit!</button>
       <ul>
-        {fruits.map(fruit => (
-          <li key={fruit}>{fruit}</li>
+        {fruits.map((fruit, index) => (
+          <li key={index}>{fruit}</li>
         ))}
       </ul>
-      <button onClick={() => addFruit('Grape')}>Add Grape</button>
     </div>
   );
 };
 
-// Usage example
-const App = () => {
-  return (
-    <FruitsList initialFruitNames={['Apple', 'Banana', 'Cherry']} />
-  );
-};
-
-export default App;
-
+// Rendering the component using ReactDOM
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<FruitsList initialFruitNames={["Apple", "Banana", "Cherry"]} />);
 ```
+**Output**
+<div data-zephyr-parse=false>
+<p class="codepen" data-height="300" data-default-tab="js,result" data-slug-hash="yyBGPwy" data-pen-title="React at CodePen" data-user="Zacharia-Haggy" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/Zacharia-Haggy/pen/yyBGPwy">
+  React at CodePen</a> by Zacharia Haggy (<a href="https://codepen.io/Zacharia-Haggy">@Zacharia-Haggy</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+</div>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
 
 **Zephyr UI:**
 ```javascript

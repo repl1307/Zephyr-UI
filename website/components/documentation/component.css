@@ -8,13 +8,17 @@
     flex: 1;
     width: 100vmin;
     max-width: 100vmin;
-    padding: 0.5rem;
+    padding: 0.5rem 2rem;
+    padding-bottom: 2rem;
     background: none;
     border: 2px solid rgba(255, 255, 255, 0.15);
     border-top: none;
     border-bottom: none;
     margin: 0;
     overflow: auto;
+    box-sizing: border-box;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .documentation > * {
@@ -23,6 +27,51 @@
     box-sizing: border-box;
     overflow:visible;
     max-width: 100vmin;
+}
+
+.documentation .cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #242323;
+    color: rgba(255, 255, 255, 0.25);
+    border-right: 1px solid;
+    width: 100%;
+    height: 100%;
+}
+
+.documentation .cover.slide-in {
+    animation: slideIn 0.25s forwards linear;
+    animation-iteration-count: 1;
+}
+
+.documentation .cover.slide-out {
+    animation: slideOut 0.25s forwards linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes slideIn {
+    0% {
+        left: 100%;
+    }
+    25% {
+        left: 100%;
+    }
+    100% {
+        left: 0%
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        left: 0%;
+    }
+    25% {
+        left: 0%;
+    }
+    100% {
+        left: 100%
+    }
 }
 
 .documentation :is(h1, h2) {
@@ -117,6 +166,8 @@
 
 .documentation li {
     padding-bottom: 0.5rem;
+    list-style-position: inside;
+    font-size: 1.15rem;
 }
 
 .documentation li:has( >code) {

@@ -1,5 +1,5 @@
 import * as Zephyr from '@repl1307/zephyr-ui';
-import { Router, Route } from '@repl1307/zephyr-ui/utilities';
+import { Router } from '@repl1307/zephyr-ui/utilities';
 import Counter from './components/Counter';
 import { NavigationBar, DropdownContent } from './components/navigation-bar/component'; 
 import Documentation from './components/documentation/component';
@@ -57,8 +57,11 @@ class DocSideBar extends SideBar {
         super();
         const testLinks = [
             { text: 'Introduction', href: '/docs/tutorials/Introduction' },
+            { text: 'Root', href: '/docs/Root' },
             { text: 'Box', href: '/docs/Box' },
             { text: 'Button', href: '/docs/Button' },
+            { text: 'Canvas', href: '/docs/Canvas' },
+            { text: 'List', href: '/docs/List' },
         ];
         for(const link of testLinks){
             this.addLink(link.text, link.href);
@@ -70,12 +73,11 @@ class DocSideBar extends SideBar {
     }
 }
 
-function baseDocs(router){
+function Docs(router){
     console.log(router.currentPath)
     const page = new Page();
     const doc = new Documentation(router.currentPath+ '.md');
     const sideBar = new DocSideBar(router);
-
     //appends
     page.content.row();
     page.content.append(sideBar);
@@ -85,6 +87,6 @@ function baseDocs(router){
 }
 
 router.createRoute('/home', HomePage);
-router.createRoute('/docs/:doc', baseDocs);
-router.createRoute('/docs/tutorials/:doc', baseDocs);
-router.setRoute('/docs/Box');
+router.createRoute('/docs/:doc', Docs);
+router.createRoute('/docs/tutorials/:doc', Docs);
+router.autoRoute();
