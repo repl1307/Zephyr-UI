@@ -2,14 +2,14 @@ import UI from '../UI';
 
 /** 
  * A flexbox component containing some useful methods.
- * Inherits all methods and properties from {@link UI}.
  * @class
+ * @memberof core
  * @extends {UI}
 */
 class Box extends UI {
   /**
-   * Creates an instance of the Box class.
-   * @param {string|HTMLElement|null} html - If not specified the box utilizes a div element.
+   * Creates a Box instance
+   * @param {string|HTMLElement|null} html - If not specified the Box uses a div element.
    */
   constructor(html=null){
     super(html);

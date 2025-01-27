@@ -1,3 +1,8 @@
+/*!
+ * zephyr-ui v1.0.0
+ * (c) 2025 Zacharia Haggy (repl1307)
+ * Released under the MIT License
+ */
 import { BaseUI } from "../UI";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -5,12 +10,15 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 function UIModsMixin<TBase extends Constructor<BaseUI>>(Base: TBase) {
   return class extends Base {
     /** Append a child UI element, or a list of child UI elements */
-    appendChild(uiElement: BaseUI | HTMLElement | Array<BaseUI | HTMLElement>) {
+    appendChild(uiElement: BaseUI | HTMLElement | (BaseUI | HTMLElement)[]) {
       return this.append(uiElement);
     }
 
     /**  Append a child UI element, or a list of child UI elements */
-    append(uiElement: BaseUI | HTMLElement | Array<BaseUI | HTMLElement>) {
+    append(uiElement: BaseUI | HTMLElement | (BaseUI | HTMLElement)[]) {
+      if (arguments.length > 1) {
+        throw new Error("append does not support multiple arguments.");
+      }
       const handleAppend = (elem: BaseUI | HTMLElement) => {
         if (elem instanceof HTMLElement) {
           const ui = new BaseUI(elem);
@@ -65,6 +73,10 @@ function UIModsMixin<TBase extends Constructor<BaseUI>>(Base: TBase) {
       this.html.textContent += text;
       return this;
     }
+    /** Gets the text content of the UI element */
+    getText(){
+      return this.html.textContent;
+    }
 
     /** Sets inner HTML content to the provided HTML string */
     setInnerHtml(html: string) {
@@ -88,7 +100,7 @@ function UIModsMixin<TBase extends Constructor<BaseUI>>(Base: TBase) {
      *  -  setStyle("property name", "value")  
      *  -  setStyle({ propertyName: "value" })
     */
-    setStyle(...args: [string, string] | [Record<string, string>]) {
+    setStyle(...args: [string, string|number] | [Record<string, string|number>]) {
       if (args.length === 2) {
         const [property, value] = args;
         this.html.style[property] = value;
@@ -110,6 +122,23 @@ function UIModsMixin<TBase extends Constructor<BaseUI>>(Base: TBase) {
     /** Gets an HTML attribute of the UI element */
     getAttribute(attribute: string) {
       return this.html.getAttribute(attribute);
+    }
+
+    /** Gets the value attribute of the UI element's html */
+    getValue(){
+      const hasValueProperty = (element: HTMLElement): 
+        element is
+        | HTMLInputElement | HTMLTextAreaElement
+        | HTMLSelectElement | HTMLOptionElement
+        | HTMLButtonElement | HTMLProgressElement
+        | HTMLMeterElement | HTMLOutputElement => {
+          return 'value' in element;
+      };
+
+      if(hasValueProperty(this.html))
+        return this.html.value
+      else
+        throw Error('The value property does not exist.');
     }
 
     /** Executes a function on all child elements */
@@ -150,6 +179,20 @@ function UIModsMixin<TBase extends Constructor<BaseUI>>(Base: TBase) {
           child.remove();
         }
       }
+      this.children = [];
+      return this;
+    }
+
+    /** Completely removes all child UI elements attached to this element */
+    removeChildren() {
+      for (const child of this.children) {
+        if (child.html) {
+          child.html.remove();
+        } else {
+          child.remove();
+        }
+      }
+      this.children = [];
       return this;
     }
   };

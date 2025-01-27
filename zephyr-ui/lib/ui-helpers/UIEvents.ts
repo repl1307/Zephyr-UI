@@ -1,3 +1,8 @@
+/*!
+ * zephyr-ui v1.0.0
+ * (c) 2025 Zacharia Haggy (repl1307)
+ * Released under the MIT License
+ */
 import { BaseUI } from "../UI";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -12,18 +17,21 @@ function UIEventsMixin<TBase extends Constructor<BaseUI>>(Base: TBase) {
     }
 
     /** Adds an event listener triggered on click. */
-    onClick(func: (event?: Event) => void): void {
+    onClick(func: (event?: Event) => void): this {
       this.addEventListener('click', func);
+      return this;
     }
 
     /** Adds an event listener triggered on mouse release */
-    onMouseUp(func: (event?: Event) => void): void {
+    onMouseUp(func: (event?: Event) => void): this {
       this.addEventListener('mouseup', func);
+      return this;
     }
 
     /** Adds an event listener triggered on mouse press */
-    onMouseDown(func: (event?: Event) => void): void {
+    onMouseDown(func: (event?: Event) => void): this {
       this.addEventListener('mousedown', func);
+      return this;
     }
   };
 }

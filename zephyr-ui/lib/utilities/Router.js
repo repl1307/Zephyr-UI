@@ -33,6 +33,7 @@ class Router {
      * @type {Route}
      */
     this.currentRoute = null;
+    this.currentPath = "";
     /**
      * The base UI element for the entire page
      * @type {UI}
@@ -130,6 +131,8 @@ class Route {
 
   //activate route
   activate = async (path) => {
+    console.log('Activating path: '+path)
+
     //remove old elements
     for(let i = 0; i < this.main.children.length; i++){
       const child = this.main.children[i];
@@ -138,10 +141,6 @@ class Route {
         i--;
       }
     }
-    //add new elements
-    const elems = await this.createElems(this.router);
-    for(const elem of elems)
-      this.main.append(elem);
 
     //parse url for subpaths and query params
     const subpaths = path.split('/');
@@ -149,6 +148,7 @@ class Route {
       if(s == '')
         subpaths.splice(subpaths.indexOf(''), 1);
     }
+
     let fullPath = "";
     for(const subpath of subpaths){
       fullPath += "/"+subpath;
@@ -161,8 +161,30 @@ class Route {
     const currentURL = window.location.href;
     const baseURL = currentURL.split("/").slice(0, 3).join("/");
     history.pushState(null, null, baseURL+fullPath)
-    this.router.currentRoute = this.path;
+    this.router.currentPath = fullPath;
+    this.router.currentRoute = this;
+    this.getParams(path);
 
+    //add new elements
+    const elems = await this.createElems(this.router);
+    for(const elem of elems)
+      this.main.append(elem);
+
+  }
+
+  getParams(path){
+    const subpaths = path.split('/');
+    for(const s of subpaths){
+      if(s == '')
+        subpaths.splice(subpaths.indexOf(''), 1);
+    }
+
+    for(let i = 0; i < this.pathStructure.length; i++){
+      const structure = this.pathStructure[i];
+      if(!structure.isStatic){
+        this.param[structure.value.replace(':', '')] = subpaths[i];
+      }
+    }
   }
 }
 

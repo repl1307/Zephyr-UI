@@ -1,1 +1,1 @@
-declare module 'zephyr-ui'
+declare module '@repl1307/zephyr-ui'

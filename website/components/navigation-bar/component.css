@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Playwrite US Modern';
-    src: url('../../assets/fonts/PlaywriteUSModern.ttf') format('truetype');
+    src: url('/fonts/PlaywriteUSModern.ttf') format('truetype');
 }
 
 .navigation-bar {
@@ -43,7 +43,9 @@
 
 .tab:hover {
     background: rgb(25, 25, 25);
+    cursor: pointer;
 }
+
 .tab::after {
     content: "";
     position: absolute;
@@ -99,6 +101,7 @@
 }
 .dropdown > *:hover {
     background: rgba(0, 0, 0, 0.25);
+    cursor: pointer;
 }
 
 .dropdown > :first-child {

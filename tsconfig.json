@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "ES2017",  // or another target, depending on your needs
+      "module": "commonjs",  // or "esnext"
+      "outDir": "./dist",  // Output directory for compiled files
+      "strict": true,  // Enabling strict type checking
+      "esModuleInterop": true,
+      "noImplicitAny": false
+    },
+    "include": [
+      "zephyr-ui/src/**/*",
+      "zephyr-ui/lib/**/*"  // Include the lib directory
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+}  

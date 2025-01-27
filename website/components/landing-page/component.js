@@ -1,4 +1,4 @@
-import * as Zephyr from 'zephyr-ui';
+import * as Zephyr from '@repl1307/zephyr-ui';
 
 export default class LandingPage extends Zephyr.Box {
     constructor(){

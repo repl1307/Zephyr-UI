@@ -1,3 +1,8 @@
+/*!
+ * zephyr-ui v1.0.0
+ * (c) 2025 repl1307
+ * Released under the MIT License
+ */
 import Button from '../lib/core/Button';
 import Box from '../lib/core/Box';
 import Select from '../lib/core/Select';

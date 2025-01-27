@@ -1,3 +1,8 @@
+/*!
+ * zephyr-ui v1.0.0
+ * (c) 2025 Zacharia Haggy (repl1307)
+ * Released under the MIT License
+ */
 import UIEventsMixin from './ui-helpers/UIEvents';
 import UIModsMixin from './ui-helpers/UIMods';
 
@@ -6,6 +11,7 @@ class BaseUI {
   remove() { throw new Error("Method not implemented."); }
   html: HTMLElement;
   children: BaseUI[];
+  parent: BaseUI|null;
   preserveOnRerender: boolean;
   
   /** A list of all existing UI elements */
@@ -18,7 +24,6 @@ class BaseUI {
   static parse(htmlString: string) {
     return BaseUI.parser.parseFromString(htmlString, 'text/html').body;
   }
-
   /**
    * @param {string} tag - The tag of the HTML element that should be created (Ex: 'li' )
    * @param {string} [textContent=''] - The text content of the HTML element
@@ -43,12 +48,15 @@ class BaseUI {
     this.children = [];
     /** Whether the UI element should persist across pages, if true, element is preserved */
     this.preserveOnRerender = false;
-
+    /** The UI element's parent, if one exists. */
+    this.parent = null;
     BaseUI.elements.push(this);
   }
 }
 
-class UI extends UIEventsMixin(UIModsMixin(BaseUI)) {}
+class UI extends UIEventsMixin(UIModsMixin(BaseUI)) {
+  declare children: UI[];
+}
 
 export { BaseUI };
 export default UI;

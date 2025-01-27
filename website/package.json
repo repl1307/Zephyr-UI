@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "website",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,5 +10,9 @@
   },
   "devDependencies": {
     "vite": "^5.3.4"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1",
+    "markdown-it": "^14.1.0"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "zephyr-ui",
+  "name": "@repl1307/zephyr-ui",
   "version": "1.0.0",
   "type": "module",
   "exports": {
@@ -14,8 +14,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "keywords": [
+    "vanilla-js",
+    "frontend",
+    "javascript-library",
+    "dom-manipulation",
+    "lightweight",
+    "simple-api",
+    "dom-helper",
+    "web-development",
+    "utility-library",
+    "developer-tools"
+  ],
+  "author": "repl1307",
+  "license": "MIT",
+  "description": "A frontend library that simplifies working with vanilla JS, while retaining flexibility and speed."
 }

@@ -1,4 +1,5 @@
-import * as Zephyr from 'zephyr-ui';
+import * as Zephyr from '@repl1307/zephyr-ui';
+import './component.css';
 
 export class NavigationBar extends Zephyr.Box {
     constructor(){
