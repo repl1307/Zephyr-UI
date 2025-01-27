@@ -1,5 +1,6 @@
 import Root from "../core/Root";
 import UI from "../UI";
+import Link from "../core/Link";
 
 /**
  * Enables route handling on clientside, only one router may exist at any point
@@ -8,6 +9,25 @@ import UI from "../UI";
  */
 class Router {
   static instance = null
+
+  /** 
+   * Handles anchor link for provided element or id
+   * @param {UI|string} link - Either the link element that is to be triggerd or the ID of the anchor
+   */
+  static handleAnchor = link => {
+    if(typeof link == 'string'){
+      if(link.includes('#'))
+        link = link.replace('#', '');
+      const anchor = document.getElementById(link);
+      anchor.scrollIntoView({behavior: 'smooth'});
+      return;
+    }
+    link.onClick(e => {
+        e.preventDefault();
+        const anchor = document.getElementById(link.html.href.split('#')[1]);
+        anchor.scrollIntoView({behavior: 'smooth'});
+    });
+  }
   /**
    * @param {Root} main - The base UI element of the entire page
    * @returns this
@@ -59,15 +79,35 @@ class Router {
    */
   async setRoute(path){
     const route = this.routes.find(route => route.matchesPath(path));
-    if(route)
-      await route.activate(path);
+    if(route){
+      const url = new URL(window.location.href);
+      url.pathname = path;
+      await route.activate(url);
+    }
     else
       console.error("Route not found: "+path);
   }
+
+  /** auto set route based off of page url */
   async autoRoute(){
     const path = window.location.pathname;
-    console.log('Auto route');
-    console.log(path);
+    console.log('Auto route: '+path);
+
+    const url = new URL(window.location.href);
+ 
+    if(url.hash != ''){
+      console.log('Is an anchor');
+      // if the current path is the same as the new path, just move to anchor
+      if(this.currentPath == path){
+        Router.handleAnchor(url.hash);
+      } 
+      // otherwise, just visit new path then handle anchor
+      else {
+        await this.setRoute(path);
+        Router.handleAnchor(url.hash);
+      }
+      return;
+    }
     await this.setRoute(path);
   }
 }
@@ -130,8 +170,9 @@ class Route {
   }
 
   //activate route
-  activate = async (path) => {
-    console.log('Activating path: '+path)
+  /** @param {URL} url */
+  activate = async (url) => {
+    console.log('Activating path: '+url)
 
     //remove old elements
     for(let i = 0; i < this.main.children.length; i++){
@@ -143,7 +184,7 @@ class Route {
     }
 
     //parse url for subpaths and query params
-    const subpaths = path.split('/');
+    const subpaths = url.pathname.split('/');
     for(const s of subpaths){
       if(s == '')
         subpaths.splice(subpaths.indexOf(''), 1);
@@ -163,7 +204,7 @@ class Route {
     history.pushState(null, null, baseURL+fullPath)
     this.router.currentPath = fullPath;
     this.router.currentRoute = this;
-    this.getParams(path);
+    this.getPathParams(url.pathname);
 
     //add new elements
     const elems = await this.createElems(this.router);
@@ -172,7 +213,8 @@ class Route {
 
   }
 
-  getParams(path){
+  // get path param values
+  getPathParams(path){
     const subpaths = path.split('/');
     for(const s of subpaths){
       if(s == '')
@@ -188,4 +230,10 @@ class Route {
   }
 }
 
+class RouterLink extends Link {
+  constructor(href){
+    super(href);
+    this.onClick = e => Router.instance?.autoRoute();
+  }
+}
 export { Router, Route };
