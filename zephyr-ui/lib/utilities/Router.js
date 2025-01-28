@@ -53,7 +53,16 @@ class Router {
      * @type {Route}
      */
     this.currentRoute = null;
+    /** 
+     * The current path (Ex: '/docs/doc1')
+     * @type {string}
+    */
     this.currentPath = "";
+    /** 
+     * The base path to be inserted before every route
+     * @type {string}
+    */
+    this.basePath = '';
     /**
      * The base UI element for the entire page
      * @type {UI}
@@ -67,6 +76,8 @@ class Router {
    * @param {function(string[]?):UI[]} createElemsFunc - Function that takes optional array of route parameters and returns an array of UI elements
    */
   createRoute(path, createElemsFunc){
+    path = this.basePath + path;
+    console.log("created path: "+path);
     const oldRoute = this.routes.find(route => route.matchesPath(path));
     if(oldRoute)
       this.routes.splice(this.routes.indexOf(oldRoute));
@@ -78,6 +89,8 @@ class Router {
    * @param {string} path - The pathname to route to 
    */
   async setRoute(path){
+    path = this.basePath + path;
+    console.log("setting path: "+path)
     const route = this.routes.find(route => route.matchesPath(path));
     if(route){
       const url = new URL(window.location.href);
@@ -90,7 +103,7 @@ class Router {
 
   /** auto set route based off of page url */
   async autoRoute(){
-    const path = window.location.pathname;
+    const path = window.location.pathname.replace(this.basePath, '');
     console.log('Auto route: '+path);
 
     const url = new URL(window.location.href);
@@ -230,10 +243,4 @@ class Route {
   }
 }
 
-class RouterLink extends Link {
-  constructor(href){
-    super(href);
-    this.onClick = e => Router.instance?.autoRoute();
-  }
-}
 export { Router, Route };
