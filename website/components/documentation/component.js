@@ -7,15 +7,6 @@ import 'highlight.js/styles/atom-one-dark.css';
 import './component.css';
 
 export default class Documentation extends Box {
-    // Given file path, convert markdown to zephyr ui elements
-    static async parseMDFile(filePath){
-        //getting file, and splitting into lines
-        const res = await fetch(filePath);
-        const fileText = await res.text();
-        const elems = await MarkdownToZephyr(fileText);
-        return elems;
-    }
-
     // mdFilepath -- the filepath to the md file the element will use as reference
     constructor(filePath){
         super();
@@ -28,10 +19,26 @@ export default class Documentation extends Box {
         this.generateDocs(filePath);
     }
 
+    // generate docs from md file path as Zephyr UI elements
     async generateDocs(filePath){
-        const elems = await Documentation.parseMDFile(filePath);
+        const elems = await this.parseMDFile(filePath);
         elems.forEach(elem => this.append(elem));
         this.cover.addClass('slide-out');
+    }
+
+    // Given file path, convert markdown to zephyr ui elements
+    async parseMDFile(filePath){
+        //getting file, and splitting into lines
+        const res = await fetch(filePath);
+        const fileText = await res.text();
+        const isHTML = res.headers.get('Content-Type') == 'text/html';
+        console.log('is html '+isHTML)
+        if(isHTML){
+            this.cover.setText('Error - 404 - Doc does not exist');
+            return null;
+        }
+        const elems = await MarkdownToZephyr(fileText);
+        return elems;
     }
 }
 
@@ -61,10 +68,6 @@ async function MarkdownToZephyr(text){
         for(const attribute of html.attributes){
             elem.setAttribute(attribute.name, attribute.value)
         }
-
-        // if(tagName == 'a'){
-        //     Router.handleAnchor(elem);
-        // }
 
         if(!shouldParse){
             elem.setInnerHtml(html.innerHTML);

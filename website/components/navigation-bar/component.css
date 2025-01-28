@@ -98,6 +98,8 @@
     padding: 0.5rem;
     font-size: 1rem;
     text-align: left;
+    color: white;
+    text-decoration: none;
 }
 .dropdown > *:hover {
     background: rgba(0, 0, 0, 0.25);

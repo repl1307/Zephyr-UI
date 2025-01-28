@@ -8,6 +8,8 @@ import './styles/index.css';
 
 const root = new Zephyr.Root();
 const router = new Router(root);
+router.basePath = '/Zephyr-UI';
+router.defaultPath = '/home';
 
 // base page
 class Page {
@@ -15,9 +17,9 @@ class Page {
         const navbar = new NavigationBar();
         navbar.addTab('Community', '/community');
         navbar.addTab('Documentation', '#', [
-            new DropdownContent('Getting Started', '/docs/getting-started'),
-            new DropdownContent('Components', '/docs/components'),
-            new DropdownContent('Migration', '/docs/migration'),
+            new DropdownContent('Getting Started', router.basePath+'/documentation/tutorials/Introduction'),
+            new DropdownContent('Components', router.basePath+'/documentation/Box'),
+            new DropdownContent('Migration', router.basePath+'/documentation/tutorials/Introduction'),
         ]);
         
         navbar.logo.setText('Zephyr UI');
@@ -37,18 +39,8 @@ function HomePage(){
         .append(new Zephyr.UI('p').setText('Zephyr UI is a library developed as an alternative to React for client side rendering.'));
     page.content.append(introBox);
     page.content.append(new Counter());
-    page.content.append(new Counter());
-    page.content.append(new Counter());
 
-    const link = new Zephyr.Link('https://www.amazon.com').setStyle({
-        color: 'white',
-        fontSize: '1.5rem',
-        width: 'fit-content'
-    });
-
-    link.openInNewTab = true;
-    link.setText('This is a link to amazon.');
-    return [page.navbar, page.content, link];
+    return [ page.navbar, page.content ];
 }
 
 //base doc page
@@ -56,12 +48,12 @@ class DocSideBar extends SideBar {
     constructor(router){
         super();
         const testLinks = [
-            { text: 'Introduction', href: '/docs/tutorials/Introduction' },
-            { text: 'Root', href: '/docs/Root' },
-            { text: 'Box', href: '/docs/Box' },
-            { text: 'Button', href: '/docs/Button' },
-            { text: 'Canvas', href: '/docs/Canvas' },
-            { text: 'List', href: '/docs/List' },
+            { text: 'Introduction', href: '/documentation/tutorials/Introduction' },
+            { text: 'Root', href: '/documentation/Root' },
+            { text: 'Box', href: '/documentation/Box' },
+            { text: 'Button', href: '/documentation/Button' },
+            { text: 'Canvas', href: '/documentation/Canvas' },
+            { text: 'List', href: '/documentation/List' },
         ];
         for(const link of testLinks){
             this.addLink(link.text, link.href);
@@ -72,11 +64,10 @@ class DocSideBar extends SideBar {
         }
     }
 }
-
+/** @param {Router} router */
 function Docs(router){
-    console.log(router.currentPath)
     const page = new Page();
-    const doc = new Documentation(router.currentPath+ '.md');
+    const doc = new Documentation(router.currentPath.replace('documentation', 'docs')+'.md');
     const sideBar = new DocSideBar(router);
     //appends
     page.content.row();
@@ -87,6 +78,6 @@ function Docs(router){
 }
 
 router.createRoute('/home', HomePage);
-router.createRoute('/docs/:doc', Docs);
-router.createRoute('/docs/tutorials/:doc', Docs);
+router.createRoute('/documentation/:doc', Docs);
+router.createRoute('/documentation/tutorials/:doc', Docs);
 router.autoRoute();

@@ -25,10 +25,10 @@ export class NavigationBar extends Zephyr.Box {
     }
 }
 
-export class DropdownContent extends Zephyr.UI {
+export class DropdownContent extends Zephyr.Link {
     constructor(name, href){
-        super('a');
+        super();
         this.setText(name);
-        this.href = href;
+        this.url = href;
     }
 }
