@@ -7,11 +7,12 @@ import UI from "../UI";
  * @memberof core
  */
 class Image extends UI {
+    declare html: HTMLImageElement;
     /**
      * Create an Image instance
-     * @param {string} url - The image URL, can also be a filepath
+     * @param url - The image URL, can also be a filepath
      */
-    constructor(url){
+    constructor(url: string){
         super('img');
         this.html.src = url;
     }

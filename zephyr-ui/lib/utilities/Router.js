@@ -1,6 +1,5 @@
 import Root from "../core/Root";
 import UI from "../UI";
-import Link from "../core/Link";
 
 /**
  * Enables route handling on clientside, only one router may exist at any point
@@ -8,6 +7,7 @@ import Link from "../core/Link";
  * @memberof utilities
  */
 class Router {
+  /** @type {Router|null} */
   static instance = null
 
   /** 
@@ -17,7 +17,7 @@ class Router {
   static handleAnchor = link => {
     if(typeof link == 'string'){
       if(link.includes('#'))
-        link = link.replace('#', '');
+        link = link.split('#').at(-1);
       const anchor = document.getElementById(link);
       anchor.scrollIntoView({behavior: 'smooth'});
       return;
@@ -64,6 +64,11 @@ class Router {
     */
     this.basePath = '';
     /**
+     * The default path to redirect to.
+     * @type {string}
+     */
+    this.defaultRoute = '/';
+    /**
      * The base UI element for the entire page
      * @type {UI}
      */
@@ -77,7 +82,7 @@ class Router {
    */
   createRoute(path, createElemsFunc){
     path = this.basePath + path;
-    console.log("created path: "+path);
+    //console.log("created path: "+path);
     const oldRoute = this.routes.find(route => route.matchesPath(path));
     if(oldRoute)
       this.routes.splice(this.routes.indexOf(oldRoute));
@@ -90,7 +95,7 @@ class Router {
    */
   async setRoute(path){
     path = this.basePath + path;
-    console.log("setting path: "+path)
+    //console.log("setting path: "+path)
     const route = this.routes.find(route => route.matchesPath(path));
     if(route){
       const url = new URL(window.location.href);
@@ -104,12 +109,12 @@ class Router {
   /** auto set route based off of page url */
   async autoRoute(){
     const path = window.location.pathname.replace(this.basePath, '');
-    console.log('Auto route: '+path);
+    //console.log('Auto route: '+path);
 
     const url = new URL(window.location.href);
  
     if(url.hash != ''){
-      console.log('Is an anchor');
+      //console.log('Is an anchor');
       // if the current path is the same as the new path, just move to anchor
       if(this.currentPath == path){
         Router.handleAnchor(url.hash);
@@ -121,6 +126,11 @@ class Router {
       }
       return;
     }
+    const hasMatch = this.routes.find(route => route.matchesPath(path)) != undefined;
+    if(!hasMatch){
+      await this.setRoute(this.defaultPath);
+    }
+
     await this.setRoute(path);
   }
 }
@@ -159,7 +169,7 @@ class Route {
 
   //gets if url path matches path structure of this route
   matchesPath(path){
-    console.log(`Getting Match Path: ${path}`);
+    //console.log(`Getting Match Path: ${path}`);
     const subpaths = path.trim().split('/');
     for(let i = 0; i < subpaths.length; i++){
       const s = subpaths[i];
@@ -178,14 +188,14 @@ class Route {
       if(subpaths[i] != this.pathStructure[i].value && this.pathStructure[i].isStatic)
         return false;
     }
-    console.log('Match Found!');
+    //console.log('Match Found!');
     return true;
   }
 
   //activate route
   /** @param {URL} url */
   activate = async (url) => {
-    console.log('Activating path: '+url)
+    //console.log('Activating path: '+url)
 
     //remove old elements
     for(let i = 0; i < this.main.children.length; i++){

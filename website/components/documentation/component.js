@@ -1,5 +1,4 @@
-import { UI, Box } from '@repl1307/zephyr-ui';
-import { Router } from '@repl1307/zephyr-ui/utilities';
+import { UI, Box, Link } from '@repl1307/zephyr-ui';
 import markdownit from 'markdown-it';
 import markdownItAnchor  from 'markdown-it-anchor';
 import hljs from 'highlight.js';
@@ -64,7 +63,13 @@ async function MarkdownToZephyr(text){
         const shouldParse = !JSON.parse(html.getAttribute('data-zephyr-parse'));
         const isBody = html.tagName == 'BODY';
         const tagName = isBody? 'div' : html.tagName.toLowerCase();
-        let elem = new UI(tagName);
+        let elem;
+
+        if(tagName == 'a')
+            elem = new Link(html.href);
+        else
+            elem = new UI(tagName);
+        
         for(const attribute of html.attributes){
             elem.setAttribute(attribute.name, attribute.value)
         }

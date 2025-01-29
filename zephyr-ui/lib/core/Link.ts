@@ -1,4 +1,5 @@
 import UI from '../UI';
+import { Router } from '../utilities/Router';
 
 /**
  * A Link component that extends the UI class to represent a clickable anchor (`<a>`) element.
@@ -10,7 +11,8 @@ import UI from '../UI';
 export default class Link extends UI {
     #_href = '';
     #_openInNewTab = false;
-    
+    declare html: HTMLLinkElement;
+
     /**
      * Creates an instance of the Link component.
      * Initializes the link with the provided URL and sets the text content to the URL.
@@ -23,6 +25,16 @@ export default class Link extends UI {
         this.#_openInNewTab = false;
         this.url = href;
         this.setText(href);
+
+        // if a router instance exists and url refers to site, allow the router to handle the link instead
+        this.onClick(e => {
+            const url = new URL(window.location.href);
+
+            if(Router.instance && this.url.includes(url.origin)){
+                e?.preventDefault();
+                Router.handleAnchor(this.url);
+            }
+        });
     }
 
     /**

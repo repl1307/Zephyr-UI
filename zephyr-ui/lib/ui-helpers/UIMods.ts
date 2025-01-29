@@ -1,5 +1,5 @@
 /*!
- * zephyr-ui v1.0.0
+ * zephyr-ui v1.1.3
  * (c) 2025 Zacharia Haggy (repl1307)
  * Released under the MIT License
  */
