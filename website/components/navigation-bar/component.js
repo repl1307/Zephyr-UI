@@ -20,6 +20,7 @@ export class NavigationBar extends Zephyr.Box {
             dropdownContainer.append(dropdown);
             tab.append(dropdownContainer);
         }
+        this.tabs.push(tab);
         this.tabContainer.append(tab);
         return this;
     }

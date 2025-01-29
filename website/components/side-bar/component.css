@@ -3,6 +3,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     height: 100%;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 .side-bar a {
@@ -20,4 +21,10 @@
 .side-bar a:hover {
     filter: brightness(75%);
     border-radius: 1rem;
+}
+
+.side-bar.mobile {
+    width: 100%;
+    height: 100vh;
+    padding: 0.5rem;
 }

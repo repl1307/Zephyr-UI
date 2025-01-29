@@ -16,10 +16,10 @@ class Page {
     constructor(){
         const navbar = new NavigationBar();
         navbar.addTab('Community', '/community');
-        navbar.addTab('Documentation', '#', [
+        navbar.addTab('Learn', '#', [
             new DropdownContent('Getting Started', router.basePath+'/documentation/tutorials/Introduction'),
             new DropdownContent('Components', router.basePath+'/documentation/Box'),
-            new DropdownContent('Migration', router.basePath+'/documentation/tutorials/Introduction'),
+            new DropdownContent('Examples', router.basePath+'/documentation/tutorials/Examples'),
         ]);
         
         navbar.logo.setText('Zephyr UI');
@@ -44,17 +44,19 @@ function HomePage(){
 }
 
 //base doc page
+const testLinks = [
+    { text: 'Introduction', href: '/documentation/tutorials/Introduction' },
+    { text: 'Root', href: '/documentation/Root' },
+    { text: 'Box', href: '/documentation/Box' },
+    { text: 'Button', href: '/documentation/Button' },
+    { text: 'Canvas', href: '/documentation/Canvas' },
+    { text: 'List', href: '/documentation/List' },
+    { text: 'Examples', href: '/documentation/tutorials/Examples' },
+];
+
 class DocSideBar extends SideBar {
     constructor(router){
         super();
-        const testLinks = [
-            { text: 'Introduction', href: '/documentation/tutorials/Introduction' },
-            { text: 'Root', href: '/documentation/Root' },
-            { text: 'Box', href: '/documentation/Box' },
-            { text: 'Button', href: '/documentation/Button' },
-            { text: 'Canvas', href: '/documentation/Canvas' },
-            { text: 'List', href: '/documentation/List' },
-        ];
         for(const link of testLinks){
             this.addLink(link.text, link.href);
             this.links.at(-1).onClick(e => {
@@ -69,8 +71,28 @@ function Docs(router){
     const page = new Page();
     const doc = new Documentation(router.currentPath.replace('documentation', 'docs')+'.md');
     const sideBar = new DocSideBar(router);
+
+    const content = [];
+    for(const link of testLinks)
+        content.push(new DropdownContent(link.text, router.basePath+link.href))
+    page.navbar.addTab('Documentation', '#', content);
+
+    function onResize(){
+        if(innerWidth < innerHeight){
+            page.navbar.tabs.at(-1).setStyle('display', 'flex');
+            sideBar.setStyle('display', 'none')
+            page.content.column();
+        } else {
+            page.navbar.tabs.at(-1).setStyle('display', 'none');
+            sideBar.setStyle('display', 'flex')
+            page.content.row();
+        }
+    }
+
+    window.addEventListener('resize', onResize)
+    onResize();
+
     //appends
-    page.content.row();
     page.content.append(sideBar);
     page.content.append(doc.container);
 
