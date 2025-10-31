@@ -1,9 +1,18 @@
 import { UI, Box, Link } from '@repl1307/zephyr-ui';
 import markdownit from 'markdown-it';
 import markdownItAnchor  from 'markdown-it-anchor';
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import html from 'highlight.js/lib/languages/xml';
+import css from 'highlight.js/lib/languages/css';
 import 'highlight.js/styles/atom-one-dark.css';
 import './component.css';
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('html', html);
+hljs.registerLanguage('css', css);
+
+
 
 export default class Documentation extends Box {
     // mdFilepath -- the filepath to the md file the element will use as reference
@@ -23,6 +32,7 @@ export default class Documentation extends Box {
         const elems = await this.parseMDFile(filePath);
         elems.forEach(elem => this.append(elem));
         this.cover.addClass('slide-out');
+        setTimeout(() => this.cover.setStyle('display', 'none'), 250);
     }
 
     // Given file path, convert markdown to zephyr ui elements
@@ -31,7 +41,7 @@ export default class Documentation extends Box {
         const res = await fetch(filePath);
         const fileText = await res.text();
         const isHTML = res.headers.get('Content-Type') == 'text/html';
-        console.log('is html '+isHTML)
+
         if(isHTML){
             this.cover.setText('Error - 404 - Doc does not exist');
             return null;

@@ -6,9 +6,10 @@
 import Button from '../lib/core/Button';
 import Box from '../lib/core/Box';
 import Select from '../lib/core/Select';
-import { Table, TableRow, TableCell } from '../lib/core/Table';
+import { Table, TableRow, TableCell } from '../lib/core/Table.js';
 import Root from '../lib/core/Root';
 import UI from '../lib/UI';
+import Text from '../lib/core/Text'
 import Link from '../lib/core/Link';
 import Canvas from '../lib/core/Canvas';
 import Image from '../lib/core/Image';
@@ -22,6 +23,7 @@ export {
   Button,
   Box,
   Select,
+  Text,
   Table,
   TableRow,
   TableCell

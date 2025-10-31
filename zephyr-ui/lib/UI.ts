@@ -7,9 +7,9 @@ import UIEventsMixin from './ui-helpers/UIEvents';
 import UIModsMixin from './ui-helpers/UIMods';
 
 /** The base UI component, all other UI components are subclasses of this */
-class BaseUI {
+class BaseUI <T extends HTMLElement = HTMLElement>{
   remove() { throw new Error("Method not implemented."); }
-  html: HTMLElement;
+  html: T;
   children: BaseUI[];
   parent: BaseUI|null;
   preserveOnRerender: boolean;
@@ -29,7 +29,7 @@ class BaseUI {
    * @param {string} [textContent=''] - The text content of the HTML element
    * @returns {HTMLElement} - An HTML element matching the provided tag
    */
-  static createElement(tag: string, textContent = '') {
+  static createElement(tag: keyof HTMLElementTagNameMap, textContent = '') {
     const element = document.createElement(tag);
     element.textContent = textContent;
     return element;
@@ -38,11 +38,11 @@ class BaseUI {
   /**
   * @param {HTMLElement|string} html - The html element that the flexbox component should be based from, if null a div is used.
   */
-  constructor(html:string|HTMLElement|null = 'div') {
+  constructor(html:keyof HTMLElementTagNameMap|T|null = 'div') {
     if(typeof html == 'string')
-      this.html = document.createElement(html);
+      this.html = document.createElement(html) as T;
     else
-      this.html = html ?? document.createElement('div');
+      this.html = (html ?? document.createElement('div')) as T;
 
     /** A list of all child elements */
     this.children = [];
@@ -54,8 +54,11 @@ class BaseUI {
   }
 }
 
-class UI extends UIEventsMixin(UIModsMixin(BaseUI)) {
-  declare children: UI[];
+class BaseUIConcrete<T extends HTMLElement = HTMLElement> extends BaseUI<T>{}
+const enhancedBaseUI = UIEventsMixin(UIModsMixin(BaseUIConcrete));
+
+class UI<T extends HTMLElement = HTMLElement> extends  enhancedBaseUI<T> {
+  declare children: UI<T>[];
 }
 
 export { BaseUI };

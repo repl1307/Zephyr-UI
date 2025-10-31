@@ -48,10 +48,18 @@
 }
 
 .documentation .cover.slide-out {
-    animation: slideOut 0.25s forwards linear;
+    animation: fadeOut 0.25s forwards linear;
     animation-iteration-count: 1;
 }
 
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
 @keyframes slideIn {
     0% {
         left: 100%;
@@ -144,7 +152,6 @@
     overflow-x: hidden;
     white-space: pre-wrap;
     word-wrap: break-word;
-    max-height: 80vh;
     box-sizing: border-box;
     border-radius: 1.5rem;
     padding: 1rem;

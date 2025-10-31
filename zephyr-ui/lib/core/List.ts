@@ -1,11 +1,11 @@
-import UI from '../UI'
+import UI, { BaseUI } from '../UI'
 
 /**
  * A list component containing some useful methods.
  * @class
  * @memberof core
  */
-export class List extends UI {
+export class List extends UI<HTMLUListElement|HTMLOListElement> {
     /**
      * 
      * @param isOrdered - Whether or not the list is an ordered list, defaults to false
@@ -20,11 +20,8 @@ export class List extends UI {
  * @class
  * @memberof core
  */
-export class ListItem extends UI {
-    list: List; /** The list the item is attached to */
-
-    constructor(list: List){
+export class ListItem extends UI<HTMLLIElement> {
+    constructor(){
         super('li');
-        this.list = list;
     }
 }

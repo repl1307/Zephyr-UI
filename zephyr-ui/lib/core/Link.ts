@@ -8,18 +8,17 @@ import { Router } from '../utilities/Router';
  * @class Link
  * @extends UI
  */
-export default class Link extends UI {
+export default class Link extends UI<HTMLLinkElement> {
     #_href = '';
     #_openInNewTab = false;
-    declare html: HTMLLinkElement;
 
     /**
      * Creates an instance of the Link component.
      * Initializes the link with the provided URL and sets the text content to the URL.
      *
-     * @param {string} href - The URL to be used for the `href` attribute of the link.
+     * @param href - The URL to be used for the `href` attribute of the link.
      */
-    constructor(href){
+    constructor(href: string){
         super('a');
         this.#_href = '';
         this.#_openInNewTab = false;
@@ -42,7 +41,7 @@ export default class Link extends UI {
      * 
      * @returns {string} The URL set for the link.
      */
-    get url(){
+    get url(): string{
         return this.#_href;
     }
 
@@ -51,7 +50,7 @@ export default class Link extends UI {
      * 
      * @param {string} value - The URL to set for the `href` attribute.
      */
-    set url(value){
+    set url(value: string){
         this.html.href = value;
         this.#_href = value;
     }
@@ -61,7 +60,7 @@ export default class Link extends UI {
      * 
      * @returns {boolean} `true` if the link is set to open in a new tab, otherwise `false`.
      */
-    get openInNewTab(){
+    get openInNewTab(): boolean{
         return this.#_openInNewTab;
     }
 
@@ -72,7 +71,7 @@ export default class Link extends UI {
      * @param {boolean} value - `true` to open the link in a new tab, `false` to open in the same tab.
      * @throws {Error} If the value is not a boolean.
      */
-    set openInNewTab(value){
+    set openInNewTab(value: boolean){
         if(typeof value != 'boolean'){
             throw new Error(`[${value}] is not of type boolean. Property openInNewTab cannot be set.`);
         }

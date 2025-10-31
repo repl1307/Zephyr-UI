@@ -5,8 +5,7 @@ import UI from '../UI';
  * @class Canvas
  * @memberof core
  */
-class Canvas extends UI {
-    declare html: HTMLCanvasElement;
+class Canvas extends UI<HTMLCanvasElement> {
     /**
      * Creates a Canvas instance
      */

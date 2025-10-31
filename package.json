@@ -11,9 +11,6 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "vite": "^5.3.5"
-  },
   "devDependencies": {
     "@babel/cli": "^7.26.4",
     "@babel/core": "^7.26.0",
@@ -23,6 +20,7 @@
     "jsdoc-babel": "^0.5.0",
     "jsdoc-to-markdown": "^9.1.1",
     "typedoc-plugin-markdown": "^4.4.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vite": "^7.1.12"
   }
 }

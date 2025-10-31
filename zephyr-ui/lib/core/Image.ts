@@ -6,8 +6,7 @@ import UI from "../UI";
  * @class Image
  * @memberof core
  */
-class Image extends UI {
-    declare html: HTMLImageElement;
+class Image extends UI<HTMLImageElement> {
     /**
      * Create an Image instance
      * @param url - The image URL, can also be a filepath

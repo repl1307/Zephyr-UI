@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Playwrite US Modern';
-    src: url('/fonts/PlaywriteUSModern.ttf') format('truetype');
+    src: url('/fonts/PlaywriteUSModern.woff2') format('truetype');
 }
 
 .navigation-bar {

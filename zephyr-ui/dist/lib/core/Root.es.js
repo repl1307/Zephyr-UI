@@ -1,0 +1,2 @@
+import i from"../UI.es.js";const t=class t extends i{constructor(){if(super(document.body),t._instance){console.log("A Root instance already exists!!!");return}t._instance=this,this.setStyle({width:"100%",height:"100%",padding:0,margin:0});const e=document.querySelector("html");e&&(e.style.width="100%",e.style.height="100%")}};t._instance=null;let s=t;export{s as default};
+//# sourceMappingURL=Root.es.js.map

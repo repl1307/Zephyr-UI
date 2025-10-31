@@ -2,17 +2,26 @@
   "name": "@repl1307/zephyr-ui",
   "version": "1.1.3",
   "type": "module",
+  "main": "./dist/zephyr-ui.cjs.js",
+  "module": "./dist/zephyr-ui.es.js",
   "exports": {
-    ".": "./src/index.js",
-    "./utilities": "./src/utilities/index.js"
+    ".": {
+      "import": "./dist/zephyr-ui.es.js",  
+      "require": "./dist/zephyr-ui.cjs.js"
+    },
+    "./utilities": { 
+      "import": "./dist/utilities.es.js",
+      "require": "./dist/utilities.cjs.js"
+    }
   },
   "files": [
-    "./lib",
-    "./src",
+    "./dist",
     "./README.md"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "vanilla-js",
@@ -28,5 +37,8 @@
   ],
   "author": "repl1307",
   "license": "MIT",
-  "description": "A frontend library that simplifies working with vanilla JS, while retaining flexibility and speed."
+  "description": "A frontend library that simplifies working with vanilla JS, while retaining flexibility and speed.",
+  "devDependencies": {
+    "vite": "^7.1.12"
+  }
 }

@@ -1,0 +1,2 @@
+"use strict";const i=require("../UI.cjs.js"),t=class t extends i.default{constructor(){if(super(document.body),t._instance){console.log("A Root instance already exists!!!");return}t._instance=this,this.setStyle({width:"100%",height:"100%",padding:0,margin:0});const e=document.querySelector("html");e&&(e.style.width="100%",e.style.height="100%")}};t._instance=null;let s=t;module.exports=s;
+//# sourceMappingURL=Root.cjs.js.map
