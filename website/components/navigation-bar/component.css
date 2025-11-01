@@ -39,6 +39,8 @@
     font-family: system-ui;
     padding: 0.5rem;
     transition: all 0.25s;
+    text-decoration: none;
+    color: white;
 }
 
 .tab:hover {

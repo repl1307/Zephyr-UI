@@ -7,7 +7,7 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    background-color: rgb(40, 39, 39);
+    background-color: rgb(50, 50, 50);
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -105,4 +105,109 @@ body {
 .visuals::-webkit-scrollbar-thumb {
     background: rgb(15, 15, 15);
     border-radius: 0.25rem;
+}
+
+.home-page {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex:1;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-page > * {
+    margin: 0.25rem;
+}
+
+
+.get-started-button {
+    margin-top: 2rem;
+    background-color: rgb(40, 40, 40);
+    color: white;
+    border-radius: 3rem;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    font-size: 2rem;
+    padding: 1rem 2.5rem;
+    transition: all 0.25s;
+}
+
+.get-started-button:hover {
+    border-radius: 1.75rem;
+    padding: 1rem 3rem;
+    border-left-width: 12px;
+    border-right-width: 12px;
+}
+
+.get-started-button:active {
+    scale: 0.9;
+}
+
+
+.orbit {
+    position: absolute;
+    translate: -50% -50%;
+    top: 50%;
+    left: 50%;
+    border: 5px solid rgb(40, 40, 40);
+    border-radius: 50rem;
+    animation: orbit-anim 20s infinite linear;
+    z-index: -1;
+    rotate: 0deg;
+    scale: 1.5 2.5;
+}
+
+.orbit-small {
+    width: 40vmin;
+    height: 40vmin;
+}
+.orbit-medium {
+    width: 65vmin;
+    height: 65vmin;
+}
+
+.orbit-large {
+    width: 85vmin;
+    height: 85vmin;
+}
+
+@keyframes orbit-anim {
+  0% {
+    rotate: 0deg;
+    scale: 2.25 3;
+  }
+  12.5% {
+    rotate: 45deg;
+    scale: 2.25 2.625;
+  }
+  25% {
+    rotate: 90deg;
+    scale: 3 1.5;
+  }
+  37.5% {
+    rotate: 135deg;
+    scale: 1.875 1.875;
+  }
+  50% {
+    rotate: 180deg;
+    scale: 2.25 3;
+  }
+  62.5% {
+    rotate: 225deg;
+    scale: 1.875 1.875;
+  }
+  75% {
+    rotate: 270deg;
+    scale: 3 1.5;
+  }
+  87.5% {
+    rotate: 315deg;
+    scale: 2.25 2.625;
+  }
+  100% {
+    rotate: 360deg;
+    scale: 2.25 3;
+  }
 }

@@ -1,6 +1,5 @@
 import * as Zephyr from '@repl1307/zephyr-ui';
 import { Router } from '@repl1307/zephyr-ui/utilities';
-import Counter from './components/Counter';
 import { NavigationBar, DropdownContent } from './components/navigation-bar/component'; 
 import Documentation from './components/documentation/component';
 import SideBar from './components/side-bar/component';
@@ -14,8 +13,8 @@ router.defaultPath = '/home';
 // base page
 class Page {
     constructor(){
-        const navbar = new NavigationBar();
-        navbar.addTab('Community', '/community');
+        const navbar = new NavigationBar(router);
+        navbar.addTab('Home', '/home');
         navbar.addTab('Learn', '#', [
             new DropdownContent('Getting Started', router.basePath+'/documentation/tutorials/Introduction'),
             new DropdownContent('Components', router.basePath+'/documentation/Box'),
@@ -34,11 +33,33 @@ class Page {
 function HomePage(){
     const page = new Page();
 
-    const introBox = new Zephyr.UI()
-        .append(new Zephyr.UI('h1').setText('What is Zephyr UI?'))
-        .append(new Zephyr.UI('p').setText('Zephyr UI is a library developed as an alternative to React for client side rendering.'));
+    const introBox = new Zephyr.UI().addClass('home-page');
+
+    // cool animation maybe?
+    for(let i = 0; i < 20; i++){
+        const sizes = ['orbit-small', 'orbit-medium', 'orbit-medium','orbit-large'];
+        const randIndex = Math.floor(Math.random() * sizes.length);
+        const orbit = new Zephyr.UI()
+        .addClass('orbit')
+        .addClass(sizes[randIndex])
+        .setStyle('animation-delay', -(i*0.5)+'s')
+        .setStyle('animation-duration', (Math.floor(Math.random()*10)+25)+'s')
+        .setStyle('animation-direction', Math.random() > 0.7? 'reverse': 'normal')
+        introBox.append(orbit);
+    }
+
+    introBox
+        .append(new Zephyr.UI('h1').setText('Zephyr UI'))
+        .append(new Zephyr.UI('p').setText('A minimal approach to client side rendering'));
+    
+    const getStartedButton = new Zephyr.Button('Get Started')
+        .addClass("get-started-button")
+        .onClick(e => router.setRoute('/documentation/tutorials/Introduction'));
+    introBox.append(getStartedButton);
+    
+
     page.content.append(introBox);
-    page.content.append(new Counter());
+
 
     return [ page.navbar, page.content ];
 }
